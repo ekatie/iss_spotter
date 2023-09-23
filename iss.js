@@ -1,5 +1,4 @@
 const request = require('request');
-const url = 'https://api.ipify.org?format=json';
 
 /**
  * This function makes a single API request to retrieve the user's IP address.
@@ -8,7 +7,7 @@ const url = 'https://api.ipify.org?format=json';
 
 const fetchMyIP = function(callback) {
 
-  request(url, (error, response, body) => {
+  request('https://api.ipify.org?format=json', (error, response, body) => {
 
     // Check for errors
     if (error) {
@@ -17,16 +16,13 @@ const fetchMyIP = function(callback) {
 
     // Check for server error
     if (response.statusCode !== 200) {
-      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
-      callback(Error(msg), null);
+      callback(Error(`Status Code ${response.statusCode} when fetching IP. Response: ${body}`), null);
       return;
     }
 
-    // If all good, return IP address
-    let data = JSON.parse(body);
-    let IP = data.ip;
-
-    return callback(null, IP);
+    // If all good, parse data and return IP address
+    let ip = JSON.parse(body).ip;
+    return callback(null, ip);
   });
 };
 
