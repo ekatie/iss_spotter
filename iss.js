@@ -43,7 +43,7 @@ const fetchCoordsByIP = function(ip, callback) {
     }
 
     // Parse returned data
-    parsedBody = JSON.parse(body);
+    const parsedBody = JSON.parse(body);
 
     // Check for response errors
     if (!parsedBody.success) {
