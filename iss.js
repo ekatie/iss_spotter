@@ -7,11 +7,22 @@ const url = 'https://api.ipify.org?format=json';
  */
 
 const fetchMyIP = function(callback) {
+
   request(url, (error, response, body) => {
+
+    // Check for errors
     if (error) {
       return callback(error, null);
     }
 
+    // Check for server error
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+
+    // If all good, return IP address
     let data = JSON.parse(body);
     let IP = data.ip;
 
