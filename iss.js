@@ -26,6 +26,12 @@ const fetchMyIP = function(callback) {
   });
 };
 
+/**
+ * This function uses an IP address to return the user's location in longitude and latitude.
+ * @param {string} ip - User's IP address to use for determining location
+ * @param {function} callback - Function that returns an error or the location coordinates.
+ */
+
 const fetchCoordsByIP = function(ip, callback) {
   let url = 'http://ipwho.is/' + ip;
 
