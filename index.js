@@ -8,7 +8,7 @@ fetchMyIP((error, ip) => {
     return;
   }
   console.log("Success! Returned IP:", ip);
-}); 
+});
 
 fetchCoordsByIP(45, (error, coords) => {
   if (error) {
