@@ -55,16 +55,10 @@ const fetchCoordsByIP = function(ip, callback) {
   });
 };
 
-
 /**
- * Makes a single API request to retrieve upcoming ISS fly over times the for the given lat/lng coordinates.
- * Input:
- *   - An object with keys `latitude` and `longitude`
- *   - A callback (to pass back an error or the array of resulting data)
- * Returns (via Callback):
- *   - An error, if any (nullable)
- *   - The fly over times as an array of objects (null if error). Example:
- *     [ { risetime: 134564234, duration: 600 }, ... ]
+ * This function takes in an latitude and longitude coordinates and prints out a list of ISS flyover times at that location.
+ * @param {object} coords - Contains location latitude and longitude keys.
+ * @param {function} callback - Function that returns an error or an object containing ISS flyover data.
  */
 
 const fetchISSFlyOverTimes = function(coords, callback) {
