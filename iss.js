@@ -98,11 +98,12 @@ const nextISSTimesForMyLocation = function(callback) {
         return callback(error, null);
       }
 
-      fetchISSFlyOverTimes(coords, (error, data) => {
+      fetchISSFlyOverTimes(coords, (error, passTimes) => {
         if (error) {
           return callback(error, null);
         }
-        return callback(null, data);
+
+        return callback(null, passTimes);
       });
     });
   });
