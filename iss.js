@@ -50,7 +50,8 @@ const fetchCoordsByIP = function(ip, callback) {
     }
 
     // Return location coordinates
-    let location = parsedBody.slice("latitude", "longitude");
+    const location = {"latitude": parsedBody.latitude, "longitude": parsedBody.longitude};
+    // let location = parsedBody.slice("latitude", "longitude");
     return callback(null, location);
   });
 };
@@ -67,21 +68,49 @@ const fetchISSFlyOverTimes = function(coords, callback) {
 
     // Check for errors
     if (error) {
-      callback(error, null);
-      return;
+      return callback(error, null);
     }
 
     // Check for server error
     if (response.statusCode !== 200) {
-      callback(Error(`Status Code ${response.statusCode} when fetching flyover data. Response: ${body}`), null);
-      return;
+      return callback(Error(`Status Code ${response.statusCode} when fetching flyover data. Response: ${body}`), null);
     }
 
     // If all good, parse data and return IP address
     let flyoverData = JSON.parse(body).response;
     return callback(null, flyoverData);
-
   });
 };
 
-module.exports = {fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes};
+/**
+ * Orchestrates multiple API requests in order to determine the next 5 upcoming ISS fly overs for the user's current location.
+ * Input:
+ *   - A callback with an error or results.
+ * Returns (via Callback):
+ *   - An error, if any (nullable)
+ *   - The fly-over times as an array (null if error):
+ *     [ { risetime: <number>, duration: <number> }, ... ]
+ */
+
+const nextISSTimesForMyLocation = function(callback) {
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    fetchCoordsByIP(ip, (error, coords) => {
+      if (error) {
+        return callback(error, null);
+      }
+
+      fetchISSFlyOverTimes(coords, (error, data) => {
+        if (error) {
+          return callback(error, null);
+        }
+        return callback(null, data);
+      });
+    });
+  });
+};
+
+module.exports = {fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation};
